@@ -49,14 +49,43 @@ function randomProduct() {
   // var randomNum = [];
     var randomIndex1 = Math.floor(Math.random() * Product.allProducts.length)
     imgEl1.src = Product.allProducts[randomIndex1].filepath;
+    imgEl1.id = Product.allProducts[randomIndex1].name;
     var randomIndex2 = Math.floor(Math.random() * Product.allProducts.length)
     imgEl2.src = Product.allProducts[randomIndex2].filepath;
+    imgEl2.id = Product.allProducts[randomIndex2].name;
     var randomIndex3 = Math.floor(Math.random() * Product.allProducts.length)
     imgEl3.src = Product.allProducts[randomIndex3].filepath;
+    imgEl3.id = Product.allProducts[randomIndex3].name;
+
+
 
     console.log(randomIndex1);
     console.log(randomIndex2);
     console.log(randomIndex3);
 }
 
+function handleClick(e) {
+  // if(e.target.id === Product.section.................)
+  // track number of total clicks
+  Product.totalClicks += 1;
+
+  // what do we do when we hit 25 clicks
+  if(Product.totalClicks > 25) {
+    Product.section.removeEventListener('click', handleClick);
+    showResults();
+  }
+
+  // count votes for each image
+// for(var i = 0; i < Product.allProducts.length; i++) {
+//   if(event.target..................)
+}
+console.log('e.target', e.target);
+
+  // call randomProduct funtion again
+randomProduct();
+}
+//Add event listener
+Product.section.addEventListener('click', handleClick);
+
+//render three images on page load
 randomProduct();
