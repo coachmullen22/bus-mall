@@ -2,6 +2,7 @@
 
 //array to store the objects
 Product.allProducts = [];
+var previousThree = [];
 
 //function to make an object
 function Product(name, filepath) {
@@ -19,7 +20,7 @@ new Product('breakfast', './img/breakfast.jpg');
 new Product('bubblegum', './img/bubblegum.jpg');
 new Product('chair', './img/chair.jpg');
 new Product('cthulhu', './img/cthulhu.jpg');
-new Product('dug-duck', './img/dug-duck.jpg');
+new Product('dog-duck', './img/dog-duck.jpg');
 new Product('dragon', './img/dragon.jpg');
 new Product('pen', './img/pen.jpg');
 new Product('pet-sweep', './img/pet-sweep.jpg');
@@ -32,16 +33,27 @@ new Product('usb', './img/usb.gif');
 new Product('water-can', './img/water-can.jpg');
 new Product('water-glass', './img/wine-glass.jpg');
 
+var imgEl1 = document.getElementById('product-pic1');
+var imgEl2 = document.getElementById('product-pic2');
+var imgEl3 = document.getElementById('product-pic3');
+
 //listener, something to be clicked
-var imgEl = document.getElementById('product-pic');
+imgEl1.addEventListener('click', randomProduct);
+imgEl2.addEventListener('click', randomProduct);
+imgEl3.addEventListener('click', randomProduct);
 
-imgEl.addEventListener('click', randomProduct);
-
-// randonly display three pictures
 function randomProduct() {
-  var randomIndex = Math.floor(Math.random() * Product.allProducts.length)
-console.log(randomIndex);
-  imgEl.src = Product.allProducts[randomIndex].filepath;
+  // var randomNum = [];
+    var randomIndex1 = Math.floor(Math.random() * Product.allProducts.length)
+    imgEl1.src = Product.allProducts[randomIndex1].filepath;
+    var randomIndex2 = Math.floor(Math.random() * Product.allProducts.length)
+    imgEl2.src = Product.allProducts[randomIndex2].filepath;
+    var randomIndex3 = Math.floor(Math.random() * Product.allProducts.length)
+    imgEl3.src = Product.allProducts[randomIndex3].filepath;
+
+    console.log(randomIndex1);
+    console.log(randomIndex2);
+    console.log(randomIndex3);
 }
 
 randomProduct();
