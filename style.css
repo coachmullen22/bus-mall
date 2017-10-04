@@ -1,4 +1,9 @@
 img {
   width: 200px;
-  display: inline-block;
+  /*display: inline-block;*/
+}
+
+/*section {
+padding: 30px;
+border: 2px solidred;
 }

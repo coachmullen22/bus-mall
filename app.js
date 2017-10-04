@@ -1,91 +1,113 @@
 'use strict'
 
-//array to store the objects
+//arrays to store the objects
 Product.allProducts = [];
 Product.lastDisplayed = [];
 Product.totalClicks = 0;
+Product.section = document.getElementById('product-section');
+Product.resultsList = document.getElementById('results');
 
 //function to make an object
-function Product(name, filepath) {
+function Product(name, filepath, altText) {
   this.name = name;
   this.filepath = filepath;
+  this.altText = altText;
   this.timesDisplayed = 0;
   this.votes = 0;
   Product.allProducts.push(this);
 }
 
 //create product instances
-new Product('bag', './img/bag.jpg');
-new Product('banana', './img/banana.jpg');
-new Product('bathroom', './img/bathroom.jpg');
-new Product('boots', './img/boots.jpg');
-new Product('breakfast', './img/breakfast.jpg');
-new Product('bubblegum', './img/bubblegum.jpg');
-new Product('chair', './img/chair.jpg');
-new Product('cthulhu', './img/cthulhu.jpg');
-new Product('dog-duck', './img/dog-duck.jpg');
-new Product('dragon', './img/dragon.jpg');
-new Product('pen', './img/pen.jpg');
-new Product('pet-sweep', './img/pet-sweep.jpg');
-new Product('scissors', './img/scissors.jpg');
-new Product('shark', './img/shark.jpg');
-new Product('sweep', './img/sweep.png');
-new Product('tauntaun', './img/tauntaun.jpg');
-new Product('unicorn', './img/unicorn.jpg');
-new Product('usb', './img/usb.gif');
-new Product('water-can', './img/water-can.jpg');
-new Product('water-glass', './img/wine-glass.jpg');
+new Product('bag', './img/bag.jpg', 'bag');
+new Product('banana', './img/banana.jpg', 'banana');
+new Product('bathroom', './img/bathroom.jpg', 'bathroom');
+new Product('boots', './img/boots.jpg', 'boots');
+new Product('breakfast', './img/breakfast.jpg', 'breakfast');
+new Product('bubblegum', './img/bubblegum.jpg', 'bubblegum');
+new Product('chair', './img/chair.jpg'), 'chair';
+new Product('cthulhu', './img/cthulhu.jpg', 'cthulhu');
+new Product('dog-duck', './img/dog-duck.jpg', 'dog-duck');
+new Product('dragon', './img/dragon.jpg', 'dragon');
+new Product('pen', './img/pen.jpg', 'pen');
+new Product('pet-sweep', './img/pet-sweep.jpg', 'pet-sweep');
+new Product('scissors', './img/scissors.jpg', 'scissors');
+new Product('shark', './img/shark.jpg', 'shark');
+new Product('sweep', './img/sweep.png', 'sweep');
+new Product('tauntaun', './img/tauntaun.jpg', 'tauntaun');
+new Product('unicorn', './img/unicorn.jpg', 'unicorn');
+new Product('usb', './img/usb.gif', 'usb');
+new Product('water-can', './img/water-can.jpg', 'water-can');
+new Product('wine-glass', './img/wine-glass.jpg', 'wine-glass');
 
-var imgEl1 = document.getElementById('product-pic1');
-var imgEl2 = document.getElementById('product-pic2');
-var imgEl3 = document.getElementById('product-pic3');
+var imgElA = document.getElementById('product-picA');
+var imgElB = document.getElementById('product-picB');
+var imgElC = document.getElementById('product-picC');
 
 //listener, something to be clicked
-imgEl1.addEventListener('click', randomProduct);
-imgEl2.addEventListener('click', randomProduct);
-imgEl3.addEventListener('click', randomProduct);
 
 function randomProduct() {
-  // var randomNum = [];
-    var randomIndex1 = Math.floor(Math.random() * Product.allProducts.length)
-    imgEl1.src = Product.allProducts[randomIndex1].filepath;
-    imgEl1.id = Product.allProducts[randomIndex1].name;
-    var randomIndex2 = Math.floor(Math.random() * Product.allProducts.length)
-    imgEl2.src = Product.allProducts[randomIndex2].filepath;
-    imgEl2.id = Product.allProducts[randomIndex2].name;
-    var randomIndex3 = Math.floor(Math.random() * Product.allProducts.length)
-    imgEl3.src = Product.allProducts[randomIndex3].filepath;
-    imgEl3.id = Product.allProducts[randomIndex3].name;
+  var randomIndexA = Math.floor(Math.random() * Product.allProducts.length);
+  var randomIndexB = Math.floor(Math.random() * Product.allProducts.length);
+  var randomIndexC = Math.floor(Math.random() * Product.allProducts.length);
 
+  while(Product.lastDisplayed.includes(randomIndexA) ||  Product.lastDisplayed.includes(randomIndexB) || Product.lastDisplayed.includes(randomIndexC) || randomIndexA === randomIndexB || randomIndexB === randomIndexC) {
 
+    randomIndexA = Math.floor(Math.random() * Product.allProducts.length);
+    randomIndexB = Math.floor(Math.random() * Product.allProducts.length);
+    randomIndexC = Math.floor(Math.random() * Product.allProducts.length);
 
-    console.log(randomIndex1);
-    console.log(randomIndex2);
-    console.log(randomIndex3);
-}
+    imgElA.src = Product.allProducts[randomIndexA].filepath;
+    imgElA.alt = Product.allProducts[randomIndexA].altText;
 
-function handleClick(e) {
-  // if(e.target.id === Product.section.................)
-  // track number of total clicks
-  Product.totalClicks += 1;
+    imgElB.src = Product.allProducts[randomIndexB].filepath;
+    imgElB.alt = Product.allProducts[randomIndexB].altText;
 
-  // what do we do when we hit 25 clicks
-  if(Product.totalClicks > 25) {
-    Product.section.removeEventListener('click', handleClick);
-    showResults();
+    imgElC.src = Product.allProducts[randomIndexC].filepath;
+    imgElC.alt = Product.allProducts[randomIndexC].altText;
+
+    Product.allProducts[randomIndexA].timesDisplayed += +1;
+    Product.allProducts[randomIndexB].timesDisplayed += +1;
+    Product.allProducts[randomIndexC].timesDisplayed += +1;
+
+    Product.lastDisplayed = [];
+    Product.lastDisplayed.push(randomIndexA, randomIndexB, randomIndexC);
   }
-
-  // count votes for each image
-// for(var i = 0; i < Product.allProducts.length; i++) {
-//   if(event.target..................)
 }
+function handleClick(e) {
+  if(e.target.id === 'product-section') {
+    return alert('You missed all of the pictures with your mouse-click! Please try again.');
+  }
 console.log('e.target', e.target);
 
-  // call randomProduct funtion again
+// track number of total clicks
+Product.totalClicks += 1;
+
+for(var i = 0; i < Product.allProducts.length; i++) {
+  if(event.target.alt === Product.allProducts[i].altText) {
+    Product.allProducts[i].votes += 1;
+  }
+}
+
+// what do we do when we hit 25 clicks
+if(Product.totalClicks > 24) {
+  Product.section.removeEventListener('click', handleClick);
+  showResults();
+}
+
 randomProduct();
+
+function showResults() {
+  for(var i = 0; i < Product.allProducts.length; i++) {
+    var liEl = document.createElement('li');
+    liEl.textContent = Product.allProducts[i].name + ' has ' + Product.allProducts[i].votes + ' votes in ' + Product.allProducts[i].timesDisplayed + 'times displayed.';
+    Product.resultsList.appendChild(liEl);
+  }
 }
 //Add event listener
 Product.section.addEventListener('click', handleClick);
+// imgElA.addEventListener('click', randomProductA);
+// imgElB.addEventListener('click', randomProductB);
+// imgElC.addEventListener('click', randomProductC);
 
 //render three images on page load
-randomProduct();
+// randomProduct();
