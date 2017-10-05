@@ -70,7 +70,7 @@ function randomProduct() {
   Product.allProducts[randomIndexB].viewed += 1;
   Product.allProducts[randomIndexC].viewed += 1;
 
-  // Product.lastDisplayed = [];
+  Product.lastDisplayed = [];
   Product.lastDisplayed.push(randomIndexA, randomIndexB, randomIndexC);
 }
 
@@ -89,36 +89,37 @@ console.log('line 83', Product.totalClicks);
   }
 
   // what do we do when we hit 25 clicks
-  if(Product.totalClicks > 2) {
+  if(Product.totalClicks > 9) {
 console.log('wtf');
     Product.section.removeEventListener('click', handleClick);
-    showResults();
+    // showResults();
   }
   randomProduct();
 }
 
-Product.showResultNames = [];
-Product.showResultVotes = [];
-Product.showResultViews = [];
+var tableNames = [];
+var tableVotes = [];
+var tableViews = [];
 
 function showResults() {
   for(var i = 0; i < Product.allProducts.length; i++) {
-    var tableNames = Product.allProducts[i].name
-    var tableVotes = Product.allProducts[i].votes
-    var tableViews = Product.allProducts[i].viewed
-    Product.showResultNames.push(tableNames);
-    Product.showResultVotes.push(tableVotes);
-    Product.showResultViews.push(tableViews);
-    console.log(tableViews, tableVotes, tableNames);
+    tableNames.push(Product.allProducts[i].name);
+    tableVotes.push(Product.allProducts[i].votes);
+    tableViews.push(Product.allProducts[i].viewed);
+  }
+  console.log(tableViews, tableVotes, tableNames);
+}
+    // Product.showResultNames.push(tableNames);
+    // Product.showResultVotes.push(tableVotes);
+    // Product.showResultViews.push(tableViews);
     // var liEl = document.createElement('li');
     // liEl.textContent = Product.allProducts[i].name + ' was selected ' + Product.allProducts[i].votes + ' times out of ' + Product.allProducts[i].viewed + ' times displayed.';
     // Product.resultsList.appendChild(liEl);
-  }
-}
-// showResults();
-console.log(Product.showResultNames);
-console.log(Product.showResultVotes);
-console.log(Product.showResultViews);
+showResults();
+
+// console.log(Product.showResultNames);
+// console.log(Product.showResultVotes);
+// console.log(Product.showResultViews);
 //Add event listener
 Product.section.addEventListener('click', handleClick);
 
@@ -129,10 +130,10 @@ var ctx = document.getElementById("canvas");
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: Product.showResultNames,
+        labels: tableNames,
         datasets: [{
             label: '# of Votes',
-            data: [3, 5, 6],
+            data: tableVotes,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
