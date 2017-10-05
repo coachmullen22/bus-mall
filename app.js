@@ -6,13 +6,14 @@ Product.lastDisplayed = [];
 Product.totalClicks = 0;
 Product.section = document.getElementById('product-section');
 Product.resultsList = document.getElementById('results');
+Product.showResults = []
 
 //function to make an object
 function Product(name, filepath, altText) {
   this.name = name;
   this.filepath = filepath;
   this.altText = altText;
-  this.timesDisplayed = 0;
+  this.viewed = 0;
   this.votes = 0;
   Product.allProducts.push(this);
 }
@@ -29,15 +30,15 @@ new Product('cthulhu', 'img/cthulhu.jpg', 'cthulhu');
 new Product('dog-duck', 'img/dog-duck.jpg', 'dogduck');
 new Product('dragon', 'img/dragon.jpg', 'dragon');
 new Product('pen', 'img/pen.jpg', 'pen');
-new Product('pet-sweep', 'img/pet-sweep.jpg', 'petsweep');
+new Product('petsweep', 'img/pet-sweep.jpg', 'petsweep');
 new Product('scissors', 'img/scissors.jpg', 'scissors');
 new Product('shark', 'img/shark.jpg', 'shark');
 new Product('sweep', 'img/sweep.png', 'sweep');
 new Product('tauntaun', 'img/tauntaun.jpg', 'tauntaun');
 new Product('unicorn', 'img/unicorn.jpg', 'unicorn');
 new Product('usb', 'img/usb.gif', 'usb');
-new Product('water-can', 'img/water-can.jpg', 'watercan');
-new Product('wine-glass', 'img/wine-glass.jpg', 'wineglass');
+new Product('watercan', 'img/water-can.jpg', 'watercan');
+new Product('wineglass', 'img/wine-glass.jpg', 'wineglass');
 
 var imgElA = document.getElementById('product-picA');
 var imgElB = document.getElementById('product-picB');
@@ -65,11 +66,11 @@ function randomProduct() {
   imgElC.src = Product.allProducts[randomIndexC].filepath;
   imgElC.alt = Product.allProducts[randomIndexC].altText;
 
-  Product.allProducts[randomIndexA].timesDisplayed += 1;
-  Product.allProducts[randomIndexB].timesDisplayed += 1;
-  Product.allProducts[randomIndexC].timesDisplayed += 1;
+  Product.allProducts[randomIndexA].viewed += 1;
+  Product.allProducts[randomIndexB].viewed += 1;
+  Product.allProducts[randomIndexC].viewed += 1;
 
-  Product.lastDisplayed = [];
+  // Product.lastDisplayed = [];
   Product.lastDisplayed.push(randomIndexA, randomIndexB, randomIndexC);
 }
 
@@ -79,6 +80,7 @@ function handleClick(e) {
   }
   // track number of total clicks
   Product.totalClicks += 1;
+console.log('line 83', Product.totalClicks);
 
   for(var i = 0; i < Product.allProducts.length; i++) {
     if(e.target.alt === Product.allProducts[i].altText) {
@@ -87,37 +89,50 @@ function handleClick(e) {
   }
 
   // what do we do when we hit 25 clicks
-  if(Product.totalClicks > 24) {
+  if(Product.totalClicks > 2) {
+console.log('wtf');
     Product.section.removeEventListener('click', handleClick);
     showResults();
   }
   randomProduct();
 }
 
+Product.showResultNames = [];
+Product.showResultVotes = [];
+Product.showResultViews = [];
+
 function showResults() {
   for(var i = 0; i < Product.allProducts.length; i++) {
-    var liEl = document.createElement('li');
-    liEl.textContent = Product.allProducts[i].name + ' was selected ' + Product.allProducts[i].votes + ' times out of ' + Product.allProducts[i].timesDisplayed + ' times displayed.';
-    Product.resultsList.appendChild(liEl);
+    var tableNames = Product.allProducts[i].name
+    var tableVotes = Product.allProducts[i].votes
+    var tableViews = Product.allProducts[i].viewed
+    Product.showResultNames.push(tableNames);
+    Product.showResultVotes.push(tableVotes);
+    Product.showResultViews.push(tableViews);
+    console.log(tableViews, tableVotes, tableNames);
+    // var liEl = document.createElement('li');
+    // liEl.textContent = Product.allProducts[i].name + ' was selected ' + Product.allProducts[i].votes + ' times out of ' + Product.allProducts[i].viewed + ' times displayed.';
+    // Product.resultsList.appendChild(liEl);
   }
 }
+// showResults();
+console.log(Product.showResultNames);
+console.log(Product.showResultVotes);
+console.log(Product.showResultViews);
 //Add event listener
 Product.section.addEventListener('click', handleClick);
 
 randomProduct();
 
-
-
-
-
+//Format Table Results
 var ctx = document.getElementById("canvas");
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: Product.showResultNames,
         datasets: [{
             label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            data: [3, 5, 6],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
